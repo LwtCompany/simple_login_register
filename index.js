@@ -72,4 +72,24 @@ function isEmail(data){
     }else{
         return false;
     }
+
+}
+
+function checkPassword(Password){
+    if(Password.length>=8 && checkPass(Password) && Password.length<=12 ){
+        return true;
+    }
+   
+    function checkPass(password){
+        let pattern = /\d/g, pattern2 = /\W/g;
+        checkNum = password.match(pattern);
+        checkChar = password.match(pattern2);
+        if(checkNum && checkChar){
+            return true;
+        }
+      
+        else{
+            return false;
+        }
+    }
 }
