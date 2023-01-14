@@ -18,6 +18,7 @@ function Click(){
             minXlength: 6
         }
     };
+    
     let currentData = {};
     currentData.name = document.getElementById("name").value;
     currentData.email = document.getElementById("email").value;
@@ -32,7 +33,7 @@ function Click(){
     }else{
         console.log("Somethingwrong")
     }
-  
+    statusError(currentData, userDataType) // statusError funksiya ishlashi uchun
 }
 
 //This function can count of length string and return true if given length equal string length othercase it returns false;
@@ -50,7 +51,7 @@ function minLengthCheck(data, lengthx){
         errorDataType.message = `Berilgan uzinlikdan kichkina ${lengthx}`;
         errorDataType.dateTime = Date();
         errorData.push(errorDataType);
-        return false;
+        
     }
 }
 
@@ -63,7 +64,7 @@ function isAttendedDigit(data){
     }
     let pattern = /[0-9]/g;
     const result = data.match(pattern);
-    console.log({result})
+    
     if(result ? result.length : 0  > 0){
         errorDataType.data = data;
         errorDataType.message = `Raqam qatnashganlikda ${result}`;
@@ -76,18 +77,22 @@ function isAttendedDigit(data){
 
 function isEmail(data){
     let pattern  = /@/g, pattern2 = /./g;
-
+    
     let checkDog = data.match(pattern);
     let checkDots = data.match(pattern2)
-
-    if((checkDog ? checkDog.length : 0 == 1) && (checkDots ? checkDog.length : 0 == 1)){
-        let checkAfterDot = data.slice(data.indexOf(".") +1);
-        return isAttendedDigit(checkAfterDot)
-    }else{
-        return false;
+    let checkAfterDot = data.slice(data.indexOf(".") +1);
+    let checkAfterDot2 = (isAttendedDigit (checkAfterDot))
+    if((checkDog ? checkDog.length : 0 == 1) && (checkDots ? checkDots.length : 0 == 1) && checkAfterDot2){
+       
+        //shu yerni o'zgartirdim
+        return true     
+    }
+    else{
+        return true;
     }
 
 }
+// console.log(isEmail('saydaliyevshohruhbek@gmail.com1'))
 
 function checkPass(data){
     let pattern = /\d/g, pattern2 = /\W/g, pattern3 = /[a-z]/g, pattern4 = /[A-Z]/g,
@@ -103,22 +108,46 @@ function checkPass(data){
     }
 }
 
+
+
+ function isName(data){ // isName funksiyasini qoshdim bu nameda raqam va belgi qatnashmaganini true va false qaytaradi.
+    let  pattern = /\W/g;
+    test = data.match(pattern);
+    
+
+    if(!test && !isAttendedDigit(data)){
+        return true;
+    }
+    else{
+        return false;
+    }
+ }
+
 function validationData(data, dataType){
     console.log({data, dataType})
     const allResults = [];
-    allResults.push(!isAttendedDigit(data.name));
+    
+   
+    // allResults.push(isAttendedDigit(data.name));
     allResults.push(isEmail(data.email));
-    allResults.push(checkPass(data.password));
+    allResults.push(checkPass(data.password));  
+    allResults.push(isName(data.name))
+
     const checkingLength = Object.entries(data).every((value, index, array) => {
        return minLengthCheck(value[1], dataType[value[0]].minXlength);
+       
     });
-    allResults.push(checkingLength);
+   
+    
 
+    allResults.push(checkingLength);
+    // console.log(allResults)
     let finalResult = allResults.every((value, index) => {
         return value;
     })
+       
 
-    console.log(errorData)
+  
     if(finalResult){      
         return true;
     }else{
@@ -128,3 +157,27 @@ function validationData(data, dataType){
     
 }
 
+function statusError(data,  dataType){  // statusError funksiya qo'shdim xatolikni bilish uchun
+    // console.log({data, dataType})
+    const allResults = {
+        name: Boolean,
+        email: Boolean,
+        password: Boolean,
+        length: Boolean,
+    };
+    
+    // allResults.push(isAttendedDigit(data.name));
+    allResults.name = (isEmail(data.email));
+    allResults.email = (checkPass(data.password));  
+    allResults.password = (isName(data.name))
+
+    const checkingLength = Object.entries(data).every((value, index, array) => {
+       return minLengthCheck(value[1], dataType[value[0]].minXlength);
+       
+    });
+    
+   
+
+    allResults.length = (checkingLength);
+    console.log(allResults)
+}
