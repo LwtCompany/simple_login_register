@@ -191,4 +191,5 @@ function statusError(data,  dataType){  // statusError funksiya qo'shdim xatolik
     console.log(allResults)
 }
 
+// salom qale
 
