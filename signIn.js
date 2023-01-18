@@ -52,12 +52,6 @@ function minLengthCheck(data, lengthx){
         
     }
 }
-
-
-
-
-
-
 // returns true if digit else false. Given string.
 function isAttendedDigit(data){
     let errorDataType = {
