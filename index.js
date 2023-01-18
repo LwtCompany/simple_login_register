@@ -31,7 +31,7 @@ function Click(){
         // inpPassword.value = null;
         console.log(userData)
     }else{
-        console.log("Somethingwrong")
+        console.log("Xatolik yuz berdi!")
     }
     statusError(currentData, userDataType) // statusError funksiya ishlashi uchun
 }
@@ -47,13 +47,16 @@ function minLengthCheck(data, lengthx){
     if(strLength > lengthx){
         return true;
     }else{
-        errorDataType.data = data;
-        errorDataType.message = `Berilgan uzinlikdan kichkina ${lengthx}`;
-        errorDataType.dateTime = Date();
-        errorData.push(errorDataType);
+        return false;
+    
         
     }
 }
+
+
+
+
+
 
 // returns true if digit else false. Given string.
 function isAttendedDigit(data){
@@ -68,7 +71,7 @@ function isAttendedDigit(data){
     if(result ? result.length : 0  > 0){
         errorDataType.data = data;
         errorDataType.message = `Raqam qatnashganlikda ${result}`;
-        errorDataType.dateTime = Date();
+        errorDataType.dateTime ;
         return true;
     }else{
         return false;
@@ -82,17 +85,18 @@ function isEmail(data){
     let checkDots = data.match(pattern2)
     let checkAfterDot = data.slice(data.indexOf(".") +1);
     let checkAfterDot2 = (isAttendedDigit (checkAfterDot))
-    if((checkDog ? checkDog.length : 0 == 1) && (checkDots ? checkDots.length : 0 == 1) && checkAfterDot2){
+    // console.log((checkDog ? checkDog.length : 0 == 1) && (checkDots ? checkDots.length : 0 == 1) && !checkAfterDot2)
+    if((checkDog ? checkDog.length : 0 == 1) && (checkDots ? checkDots.length : 0 == 1) && !checkAfterDot2){
        
         //shu yerni o'zgartirdim
         return true     
     }
     else{
-        return true;
+        return false;
     }
 
 }
-// console.log(isEmail('saydaliyevshohruhbek@gmail.com1'))
+
 
 function checkPass(data){
     let pattern = /\d/g, pattern2 = /\W/g, pattern3 = /[a-z]/g, pattern4 = /[A-Z]/g,
@@ -104,7 +108,7 @@ function checkPass(data){
     if(test1 && test2 && test3 && test4){
         return true;
     }else{
-        return false
+        return false;
     }
 }
 
@@ -124,7 +128,7 @@ function checkPass(data){
  }
 
 function validationData(data, dataType){
-    console.log({data, dataType})
+   
     const allResults = [];
     
    
@@ -158,18 +162,23 @@ function validationData(data, dataType){
 }
 
 function statusError(data,  dataType){  // statusError funksiya qo'shdim xatolikni bilish uchun
-    // console.log({data, dataType})
+    
     const allResults = {
-        name: Boolean,
-        email: Boolean,
-        password: Boolean,
-        length: Boolean,
+        name: Boolean, lengthName: Boolean,
+        email: Boolean, lengthEmail: Boolean,
+        password: Boolean, lengthPass: Boolean,
+        
     };
     
     // allResults.push(isAttendedDigit(data.name));
-    allResults.name = (isEmail(data.email));
-    allResults.email = (checkPass(data.password));  
-    allResults.password = (isName(data.name))
+    allResults.name = (isName(data.name))
+    allResults.lengthName = (minLengthCheck(data.name, dataType.email.minXlength))
+    allResults.email = (isEmail(data.email));
+    allResults.lengthEmail = (minLengthCheck(data.email, dataType.name.minXlength))
+    allResults.password = (checkPass(data.password));  
+    allResults.lengthPass = (minLengthCheck(data.password, dataType.password.minXlength))
+
+    
 
     const checkingLength = Object.entries(data).every((value, index, array) => {
        return minLengthCheck(value[1], dataType[value[0]].minXlength);
@@ -178,6 +187,8 @@ function statusError(data,  dataType){  // statusError funksiya qo'shdim xatolik
     
    
 
-    allResults.length = (checkingLength);
+    // allResults.length = (checkingLength);
     console.log(allResults)
 }
+
+
