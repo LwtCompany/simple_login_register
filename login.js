@@ -1,27 +1,12 @@
-
-const userData = [
-    {
-        name: "John",
-        email: "john12@gmail.com",
-        password: "123"
-    },
-    {
-        name: "Sue",
-        email: "sue12@gmail.com",
-        password: "admin"
-    }
-];
-function Signin(email, password){
-    let email_current = email.value, password_current = password.value;
-
-    
-    let result =  userData.find(element => {
-           if(element.email == email_current && element.password == password_current)
-            return element;
+function Signin(email, password) {
+    let emailCurrent = email.value, passwordCurrent = password.value;
+    let result = userData.find(element => {
+        if(element.email == emailCurrent && element.password == passwordCurrent)  return element;       
     });
+     if(result) {
+        console.log(result);
+        console.log("Siz saytimizga muvoffaqiyatli kirdingiz!")
+        email.value = null, password.value = null;
+     }else console.log("Bunday foydalanuvchi mavjud emas! Ro'yxatdan o'ting yoki Qaytadan tering!");
 
-  
-    console.log(result)
-
-       
 }
